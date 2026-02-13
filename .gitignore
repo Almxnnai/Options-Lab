@@ -1,10 +1,13 @@
-# Python
-__pycache__/
-*.pyc
-
-# Virtual environment
+# Virtual environments
 venv/
 .venv/
 
-# Mac
+# VS Code settings
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Mac system files
 .DS_Store

@@ -1,7 +1,5 @@
-# ====================================================
 # OPTIONS LAB
 # Black–Scholes + Monte Carlo + Greeks + IV + Convergence
-# ====================================================
 
 import numpy as np
 import pandas as pd
@@ -13,9 +11,9 @@ from src.black_scholes import black_scholes_price, black_scholes_greeks
 from src.monte_carlo import monte_carlo_price
 from src.implied_vol import implied_volatility
 
-# ----------------------------------------------------
+
 # Helper: estimate annualized volatility from returns
-# ----------------------------------------------------
+
 def estimate_annualized_vol(prices: pd.Series) -> float:
     """
     Estimates annualized volatility using daily log returns.
@@ -25,9 +23,9 @@ def estimate_annualized_vol(prices: pd.Series) -> float:
     daily_vol = log_returns.std()
     return float(daily_vol * np.sqrt(252))
 
-# ----------------------------------------------------
+
 # Options chain helpers (cached for speed)
-# ----------------------------------------------------
+
 @st.cache_data(ttl=300)
 def get_expirations(ticker: str):
     """Fetch available option expirations for a ticker."""
@@ -60,10 +58,10 @@ def pick_market_price(row: pd.Series, source: str = "mid"):
 
     return last if np.isfinite(last) and last > 0 else np.nan
 
-# ---------- Page Configuration ----------
+# Page Configuration
 st.set_page_config(page_title="Options Lab", layout="wide", page_icon="📈")
 
-# ---------- Session State Initialization (MUST be early) ----------
+# Session State Initialization
 # Inputs
 st.session_state.setdefault("S", 100.0)
 st.session_state.setdefault("sigma", 0.20)
@@ -80,19 +78,17 @@ st.session_state.setdefault("last_put_bs", None)
 st.session_state.setdefault("last_call_mc", None)
 st.session_state.setdefault("last_put_mc", None)
 
-
-# ---------- App Header ----------
+# App Header
 st.title("Options Lab 📊")
 st.markdown("### Quantitative Options Analytics Dashboard")
 st.write("Black–Scholes • Monte Carlo • Greeks • Implied Volatility • Volatility Smile")
 
-# ---------- Layout ----------
+# Layout
 left, right = st.columns([1, 1])
 
 
-# ====================================================
 # LEFT SIDE: Market Data
-# ====================================================
+
 with left:
     st.header("Market Data")
 
@@ -107,15 +103,13 @@ with left:
         st.write(data.tail())
 
 
-# ====================================================
 # RIGHT SIDE: Option Pricing
-# ====================================================
+
 with right:
     st.header("Option Pricing (European)")
 
-    # -----------------------------
     # Auto-fill from ticker
-    # -----------------------------
+    
     st.subheader("Auto-fill from ticker (optional)")
 
     col_a, col_b = st.columns(2)
@@ -140,9 +134,9 @@ with right:
 
     st.divider()
 
-    # -----------------------------
+
     # Inputs
-    # -----------------------------
+    
     S = st.number_input(
         "Stock Price (S)",
         min_value=0.01,
@@ -199,9 +193,9 @@ with right:
     )
     sim_grid = [1000, 3000, 5000, 10000, 20000, 50000, 100000, 200000]
 
-    # -----------------------------
+    
     # Pricing
-    # -----------------------------
+    
     if st.button("Price Option (BS + Monte Carlo)", help="Computes Call/Put prices using Black–Scholes and Monte Carlo."):
         # Black–Scholes
         call_bs = black_scholes_price(S, K, r, sigma, T, "call")
@@ -299,9 +293,8 @@ with right:
             for k, v in put_greeks.items():
                 st.metric(k, f"{v:.6f}")
 
-    # ====================================================
     # Implied Volatility + Autofill (always visible)
-    # ====================================================
+
     st.divider()
     st.subheader("Implied Volatility (IV)")
 
@@ -379,9 +372,8 @@ with right:
         st.success("IV solved ✅")
         st.metric("Implied Volatility (σ)", f"{st.session_state['iv_result']:.4f}")
     
-# ====================================================
-# Volatility Smile (IV vs Strike) — Step 8
-# ====================================================
+# Volatility Smile (IV vs Strike)
+
 st.divider()
 st.subheader("Volatility Smile (IV vs Strike)")
 st.caption("Uses real option chain prices to compute implied volatility across strikes.")
@@ -508,9 +500,9 @@ else:
 
         except Exception as e:
             st.error(f"Smile build failed: {e}")
-    # ====================================================
-    # Payoff & PnL Diagram — Step 9
-    # ====================================================
+    
+    # Payoff & PnL Diagram
+
     st.divider()
     st.subheader("Payoff & PnL at Expiry")
     st.caption("Shows payoff and profit/loss at maturity across a range of underlying prices.")
@@ -568,7 +560,8 @@ else:
         else:
             premium = last_put_mc
 
-    else:  # Market (IV input)
+    # Market (IV input)
+    else:
         premium = st.session_state.get("iv_market_price")
 
     if premium is None:

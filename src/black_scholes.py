@@ -1,15 +1,12 @@
-# ====================================================
 # black_scholes.py
 # Pricing + Greeks for European options
-# ====================================================
 
 import numpy as np
 from scipy.stats import norm
 
 
-# ====================================================
 # Black–Scholes Pricing
-# ====================================================
+
 def black_scholes_price(S, K, r, sigma, T, option_type="call"):
     """
     Black–Scholes price for a European option.
@@ -34,9 +31,8 @@ def black_scholes_price(S, K, r, sigma, T, option_type="call"):
     raise ValueError("option_type must be 'call' or 'put'")
 
 
-# ====================================================
 # Black–Scholes Greeks
-# ====================================================
+
 def black_scholes_greeks(S, K, r, sigma, T, option_type="call"):
     """
     Returns Greeks: Delta, Gamma, Vega, Theta, Rho

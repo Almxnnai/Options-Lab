@@ -1,7 +1,6 @@
-# ====================================================
 # implied_vol.py
 # Solve implied volatility using Black–Scholes
-# ====================================================
+
 
 from src.black_scholes import black_scholes_price
 
