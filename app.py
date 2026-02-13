@@ -61,7 +61,7 @@ def pick_market_price(row: pd.Series, source: str = "mid"):
     return last if np.isfinite(last) and last > 0 else np.nan
 
 # ---------- Page Configuration ----------
-st.set_page_config(page_title="Options Lab", layout="wide")
+st.set_page_config(page_title="Options Lab", layout="wide", page_icon="📈")
 
 # ---------- Session State Initialization (MUST be early) ----------
 # Inputs
@@ -82,9 +82,9 @@ st.session_state.setdefault("last_put_mc", None)
 
 
 # ---------- App Header ----------
-st.title("Options Lab")
-st.write("Black–Scholes + Monte Carlo pricing, Greeks, and implied volatility.")
-
+st.title("Options Lab 📊")
+st.markdown("### Quantitative Options Analytics Dashboard")
+st.write("Black–Scholes • Monte Carlo • Greeks • Implied Volatility • Volatility Smile")
 
 # ---------- Layout ----------
 left, right = st.columns([1, 1])
